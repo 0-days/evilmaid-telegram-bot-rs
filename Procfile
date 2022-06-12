@@ -1,1 +1,1 @@
-worker: ./target/release/evilmaid-telegram-bot
+web: ./target/release/evilmaid-telegram-bot
