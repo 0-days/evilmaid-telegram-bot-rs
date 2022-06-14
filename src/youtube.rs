@@ -65,10 +65,10 @@ impl MetaData {
         let stat = &self.items[0].statistics;
         let mut s = format!(
             "{}\n\
-            公開日: {}\n\
-            閲覧回数: {}\n\
-            ライク数: {}\n\
-            コメント数: {}\n",
+            ▫️公開日: {}\n\
+            ▫️閲覧回数: {}\n\
+            ▫️ライク数: {}\n\
+            ▫️コメント数: {}\n",
             bold(&escape(&snippet.title)),
             &escape(&snippet.published_at),
             bold(&stat.view_count),
@@ -77,10 +77,10 @@ impl MetaData {
         );
 
         if let Some(lang) = &snippet.default_language {
-            s.push_str(&format!("言語: {}\n", escape(&lang)))
+            s.push_str(&format!("▫️言語: {}\n", escape(&lang)))
         }
         if let Some(lang) = &snippet.default_audio_language {
-            s.push_str(&format!("音声言語: {}\n", escape(&lang)))
+            s.push_str(&format!("▫️音声言語: {}\n", escape(&lang)))
         }
         s.push_str(&format!(
             "{} より\n\n",
