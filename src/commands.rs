@@ -63,7 +63,7 @@ pub async fn answer(
                 unreachable!()
             };
 
-            let auto_delete = match GetChat::new(m.chat.id).message_auto_delete_time {
+            let auto_delete = match m.chat.message_auto_delete_time {
                 Some(time) => time.to_string(),
                 None => String::from("無効"),
             };
