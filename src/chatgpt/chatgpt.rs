@@ -1,3 +1,6 @@
+use reqwest;
+use requwest::header;
+
 struct ChatGpt {
     token: String,
 }
@@ -16,8 +19,10 @@ impl ChatGpt {
             inputs: message,
         };
         let response = client.post(url)
-            .header()
-            .json(&body)
+            .header(
+                ChatGptHeader::new(self.token)
+                    .to_header()
+            )
             .send()
             .await
             .unwrap();
@@ -61,5 +66,25 @@ impl fmt::Display for Path {
             Path::Conversation => write!(f, "backend-api/conversation"),
             _ => panic!("Invalid path"),
         }
+    }
+}
+
+struct ChatGptHeader {
+    header: header::HeaderMap,
+}
+
+impl ChatGptHeader {
+    pub fn new(token: String) -> ChatGptHeader {
+        let mut header = header::HeaderMap::new();
+        header.insert(header::CONTENT_TYPE, "application/json".parse().unwrap());
+        header.insert(header::USER_AGENT, "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36");
+        header.insert(header::AUTHORIZATION, format!("Bearer {}", token).parse().unwrap());
+        ChatGptHeader {
+            header,
+        }
+    }
+
+    pub fn to_header(&self) -> header::HeaderMap {
+        self.header.clone()
     }
 }
