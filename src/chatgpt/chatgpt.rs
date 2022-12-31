@@ -29,3 +29,37 @@ impl ChatGpt {
 struct ChatResponse {
     text: String,
 }
+
+struct ChatGptUrl {
+    path: Path,
+}
+
+impl ChatGptUrl {
+    pub fn new(path: Path) -> ChatGptUrl {
+        ChatGptUrl {
+            path,
+        }
+    }
+}
+
+impl fmt::Display for ChatGptUrl {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        let host = "https://chat.openai.com";
+        let url = format!("{}/{}", host, self.path);
+    }
+}
+
+enum Path {
+    Session = "api/auth/session",
+    Conversation = "backend-api/conversation",
+}
+
+impl fmt::Display for Path {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match self {
+            Path::Session => write!(f, "api/auth/session"),
+            Path::Conversation => write!(f, "backend-api/conversation"),
+            _ => panic!("Invalid path"),
+        }
+    }
+}
