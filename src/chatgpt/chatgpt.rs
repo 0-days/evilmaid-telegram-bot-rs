@@ -3,12 +3,14 @@ use requwest::header;
 
 struct ChatGpt {
     token: String,
+    header: ChatGptHeader,
 }
 
 impl ChatGpt {
     pub fn new(token: String) {
         ChatGpt {
             token,
+            header: ChatGptHeader::new(token).to_header(),
         }
     }
 
@@ -19,10 +21,7 @@ impl ChatGpt {
             inputs: message,
         };
         let response = client.post(url)
-            .header(
-                ChatGptHeader::new(self.token)
-                    .to_header()
-            )
+            .header(self.header.to_header())
             .send()
             .await
             .unwrap();
@@ -40,7 +39,7 @@ struct ChatGptUrl {
 }
 
 impl ChatGptUrl {
-    pub fn new(path: Path) -> ChatGptUrl {
+    fn new(path: Path) -> ChatGptUrl {
         ChatGptUrl {
             path,
         }
@@ -74,17 +73,18 @@ struct ChatGptHeader {
 }
 
 impl ChatGptHeader {
-    pub fn new(token: String) -> ChatGptHeader {
+    fn new(token: String) -> ChatGptHeader {
         let mut header = header::HeaderMap::new();
         header.insert(header::CONTENT_TYPE, "application/json".parse().unwrap());
         header.insert(header::USER_AGENT, "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/108.0.0.0 Safari/537.36");
         header.insert(header::AUTHORIZATION, format!("Bearer {}", token).parse().unwrap());
+        header.insert(header::ACCEPT, "text/event-stream".parse().unwrap());
         ChatGptHeader {
             header,
         }
     }
 
-    pub fn to_header(&self) -> header::HeaderMap {
+    fn to_header(&self) -> header::HeaderMap {
         self.header.clone()
     }
 }
