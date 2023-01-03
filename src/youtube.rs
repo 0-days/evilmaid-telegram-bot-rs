@@ -67,7 +67,7 @@ impl MetaData {
             "{}\n\
             ️📅 公開日: {}\n\
             👀️ 閲覧回数: {}\n\
-            👍 ライク数: {}\n\
+            ❤️ ライク数: {}\n\
             💬 コメント数: {}\n",
             bold(&escape(&snippet.title)),
             &escape(&snippet.published_at),
