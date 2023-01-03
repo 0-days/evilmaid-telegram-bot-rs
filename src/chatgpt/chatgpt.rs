@@ -44,6 +44,12 @@ impl ChatGptUrl {
             path,
         }
     }
+
+    fn to_string(&self) -> String {
+        let host = "https://chat.openai.com";
+        let url = format!("{}/{}", host, self.path.to_string());
+        url
+    }
 }
 
 impl fmt::Display for ChatGptUrl {
@@ -56,6 +62,16 @@ impl fmt::Display for ChatGptUrl {
 enum Path {
     Session = "api/auth/session",
     Conversation = "backend-api/conversation",
+}
+
+impl Path {
+    fn to_string(&self) -> String {
+        match self {
+            Path::Session => "api/auth/session",
+            Path::Conversation => "backend-api/conversation",
+            _ => panic!("Invalid path"),
+        }
+    }
 }
 
 impl fmt::Display for Path {
@@ -87,4 +103,28 @@ impl ChatGptHeader {
     fn to_header(&self) -> header::HeaderMap {
         self.header.clone()
     }
+}
+
+#[test]
+fn client_test() {
+    let token = "";
+    let client = reqwest::Client::new();
+    let url = ChatGptUrl::new(Path::Conversation);
+    let body = ChatRequest {
+        inputs: message,
+    };
+    let response = client.post(url)
+        .header(self.header.to_header())
+        .send()
+        .await
+        .unwrap();
+    let response = response.json::<ChatResponse>().await.unwrap();
+    response
+}
+
+#[test]
+fn send_message_test() {
+    let token = "token";
+    let client = ChatGpt::new(token);
+    client.send_message("Hello".to_string());
 }
