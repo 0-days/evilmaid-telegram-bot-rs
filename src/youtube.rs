@@ -77,10 +77,10 @@ impl MetaData {
         );
 
         if let Some(lang) = &snippet.default_language {
-            s.push_str(&format!("▫️言語: {}\n", escape(&lang)))
+            s.push_str(&format!("️🗣️ 言語: {}\n", escape(&lang)))
         }
         if let Some(lang) = &snippet.default_audio_language {
-            s.push_str(&format!("▫️音声言語: {}\n", escape(&lang)))
+            s.push_str(&format!("🎙️ 音声言語: {}\n", escape(&lang)))
         }
         s.push_str(&format!(
             "{} より\n\n",
